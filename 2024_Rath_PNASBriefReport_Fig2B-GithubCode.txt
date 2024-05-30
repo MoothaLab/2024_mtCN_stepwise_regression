@@ -1,0 +1,25 @@
+######################################################################################
+# Goal: mtCN vs TMT expression stepwise regression
+#
+# Input file: ccle176.mtCN_and_TMT.raw_vals.complete_obs.txt
+#  columns: 176 cancer encyclopedia cell lines
+#  rows: first row is mtCN (estimated from whole genome sequence data), other 5153 rows are proteins
+#  values: TMT protein abundance metric of protein in cell line (or mtCN for first row)
+#
+# Contents:stepwise regression was performed using the R package leaps (regsubsets, nvmax=3, method="forward").
+######################################################################################
+
+library(tidyverse)
+library(leaps)
+
+# Input data with mtCN and TMT values (not ranks)
+dfRAW=read.delim("ccle176.mtCN_and_TMT.raw_vals.complete_obs.txt",stringsAsFactors=FALSE)
+# make Gene_Symbol the row names and then remove this as a column
+rownames(dfRAW)=dfRAW$GeneSym
+dfRAW=dfRAW[,2:ncol(dfRAW)]
+# create a transposed matrix with genes (and mtCN) as columns and cell lines as rows
+dfRAWt=data.frame(t(dfRAW))
+# create ranks from raw vals
+dfRANK=data.frame(apply(dfRAWt,2,rank,ties.method="min"))
+modelsRANK <- regsubsets(mtCN~., data = dfRANK, nvmax = 3, method = "forward",really.big=TRUE)
+coef(modelsRANK,1:3)

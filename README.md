@@ -9,6 +9,5 @@
 #
 # Contents: Stepwise linear regression was performed using the R package leaps (regsubsets, nvmax=3, method="forward")
 
-
 ## License
 This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/deed.en). You are free to share or adapt the material for non-commercial purposes.

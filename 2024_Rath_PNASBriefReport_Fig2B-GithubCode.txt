@@ -23,3 +23,27 @@ dfRAWt=data.frame(t(dfRAW))
 dfRANK=data.frame(apply(dfRAWt,2,rank,ties.method="min"))
 modelsRANK <- regsubsets(mtCN~., data = dfRANK, nvmax = 3, method = "forward",really.big=TRUE)
 coef(modelsRANK,1:3)
+
+# Why did we select nvmax=3 for our final model?
+# We used a tolerance level of 0.0001 and kept adding parameters until 
+# the regression t-statistic pvalue exceeded 0.0001
+modelsPERCENTILE <- regsubsets(mtCN~., data = dfPERCENTILE, nvmax = 6, method = "forward",really.big=TRUE)
+coef(modelsPERCENTILE,1:6)
+
+# here are models with different parameters
+m1=dfPERCENTILE[,c("mtCN","TFAM_Q00059")]
+m2=dfPERCENTILE[,c("mtCN","TFAM_Q00059","HIST1H2BA_Q96A08")]
+m3=dfPERCENTILE[,c("mtCN","TFAM_Q00059","HIST1H2BA_Q96A08","MRPS27_Q92552")]
+m4=dfPERCENTILE[,c("mtCN","TFAM_Q00059","HIST1H2BA_Q96A08","MRPS27_Q92552","GLRX3_O76003")]
+# use limma to get t-statistics and pvalues for each parameter for each model
+library(limma)
+fit1<-lm(mtCN ~ TFAM_Q00059, data=m1)
+fit2<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08, data=m2)
+fit3<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08 + MRPS27_Q92552, data=m3)
+fit4<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08 + MRPS27_Q92552 + GLRX3_O76003, data=m4)
+# for fit4, the 4th parameter GLRX3 has pvalue > 0.0001
+summary(fit1)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+

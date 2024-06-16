@@ -33,8 +33,8 @@ modelsPERCENTILE <- regsubsets(mtCN~., data = dfPERCENTILE, nvmax = 3, method = 
 coef(modelsPERCENTILE,1:3)
 
 # Why did we select nvmax=3 for our final model?
-# We used a tolerance level of 0.0001 and kept adding parameters until 
-# the regression t-statistic pvalue exceeded 0.0001
+# We used a tolerance level of 1e-5 and kept adding parameters until 
+# the regression t-statistic pvalue exceeded 1e-5
 
 modelsPERCENTILE <- regsubsets(mtCN~., data = dfPERCENTILE, nvmax = 6, method = "forward",really.big=TRUE)
 coef(modelsPERCENTILE,1:15)
@@ -52,7 +52,7 @@ fit2<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08, data=m2)
 fit3<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08 + MRPS27_Q92552, data=m3)
 fit4<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08 + MRPS27_Q92552 + GLRX3_O76003, data=m4)
 fit5<-lm(mtCN ~ TFAM_Q00059 + HIST1H2BA_Q96A08 + MRPS27_Q92552 + GLRX3_O76003 + IGF1R_P08069, data=m5)
-# for fit4, the 4th parameter GLRX3 has pvalue > 0.0001
+# for fit4, the 4th parameter GLRX3 has pvalue > 1e-5
 summary(fit1)
 summary(fit2)
 summary(fit3)
